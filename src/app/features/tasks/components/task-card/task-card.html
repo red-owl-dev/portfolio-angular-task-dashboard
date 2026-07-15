@@ -1,0 +1,22 @@
+<article class="task-card">
+  <header class="task-card__header">
+    <div class="task-card__title">{{ task.title }}</div>
+    <div class="task-card__badges">
+      <span class="badge status">{{ statusLabels[task.status] }}</span>
+      <span class="badge priority">{{ priorityLabels[task.priority] }}</span>
+    </div>
+  </header>
+
+  <p class="task-card__description">{{ task.description }}</p>
+
+  <div class="task-card__footer">
+    <div>
+      <span class="task-card__label">Responsável:</span>
+      <span>{{ task.assignee || 'Sem responsável' }}</span>
+    </div>
+    <div>
+      <span class="task-card__label">Prazo:</span>
+      <span>{{ task.dueDate | date:'longDate' }}</span>
+    </div>
+  </div>
+</article>

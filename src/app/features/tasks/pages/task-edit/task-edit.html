@@ -1,0 +1,17 @@
+<section class="page-shell">
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">Editar tarefa</p>
+      <h1>Atualizar tarefa</h1>
+      <p>Altere os detalhes da tarefa e salve para atualizar.</p>
+    </div>
+  </div>
+
+  <div *ngIf="loading()" class="status-message">Carregando tarefa...</div>
+
+  <div *ngIf="error() && !loading()" class="status-message error">{{ error() }}</div>
+
+  <ng-container *ngIf="task() && !loading()">
+    <app-task-form [task]="task()" (save)="onSave($event)" (cancel)="onCancel()"></app-task-form>
+  </ng-container>
+</section>

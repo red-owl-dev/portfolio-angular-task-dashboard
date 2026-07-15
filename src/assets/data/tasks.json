@@ -1,0 +1,82 @@
+[
+  {
+    "id": "task-001",
+    "title": "Planejar sprint de marketing",
+    "description": "Definir prioridades e metas para a próxima sprint de marketing.",
+    "status": "pending",
+    "priority": "medium",
+    "assignee": "Ana",
+    "dueDate": "2026-08-10",
+    "createdAt": "2026-07-10"
+  },
+  {
+    "id": "task-002",
+    "title": "Corrigir bugs de autenticação",
+    "description": "Verificar e corrigir comportamento do login social.",
+    "status": "in-progress",
+    "priority": "high",
+    "assignee": "Bruno",
+    "dueDate": "2026-07-18",
+    "createdAt": "2026-07-05"
+  },
+  {
+    "id": "task-003",
+    "title": "Atualizar documentação do produto",
+    "description": "Revisar informações técnicas e capturas de tela.",
+    "status": "completed",
+    "priority": "low",
+    "assignee": null,
+    "dueDate": "2026-07-01",
+    "createdAt": "2026-06-20"
+  },
+  {
+    "id": "task-004",
+    "title": "Configurar anúncios no Google Ads",
+    "description": "Criar campanhas iniciais e acompanhar desempenho.",
+    "status": "pending",
+    "priority": "high",
+    "assignee": "Clara",
+    "dueDate": "2026-07-25",
+    "createdAt": "2026-07-12"
+  },
+  {
+    "id": "task-005",
+    "title": "Avaliar proposta de fornecedor",
+    "description": "Comparar orçamentos e apresentar recomendação.",
+    "status": "in-progress",
+    "priority": "medium",
+    "assignee": "Diego",
+    "dueDate": "2026-07-20",
+    "createdAt": "2026-07-09"
+  },
+  {
+    "id": "task-006",
+    "title": "Revisar contrato de parceria",
+    "description": "Garantir que os termos estejam alinhados ao escopo do projeto.",
+    "status": "pending",
+    "priority": "low",
+    "assignee": null,
+    "dueDate": "2026-08-01",
+    "createdAt": "2026-07-11"
+  },
+  {
+    "id": "task-007",
+    "title": "Refatorar componente de relatórios",
+    "description": "Melhorar performance e legibilidade do código.",
+    "status": "completed",
+    "priority": "medium",
+    "assignee": "Eduarda",
+    "dueDate": "2026-07-03",
+    "createdAt": "2026-06-28"
+  },
+  {
+    "id": "task-008",
+    "title": "Planejar evento de lançamento",
+    "description": "Definir local, cronograma e materiais de divulgação.",
+    "status": "in-progress",
+    "priority": "high",
+    "assignee": "Felipe",
+    "dueDate": "2026-07-22",
+    "createdAt": "2026-07-06"
+  }
+]

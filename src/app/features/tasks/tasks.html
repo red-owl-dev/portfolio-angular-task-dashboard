@@ -1,4 +1,99 @@
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
 <section class="feature-page">
-  <h1>Tasks</h1>
-  <p>Espaço para exibir a lista de tarefas planejadas ou em andamento.</p>
+  <div class="page-header">
+    <div>
+      <h1>Tasks</h1>
+      <p>Consultas rápidas de tarefas com busca, filtros e ordenação.</p>
+    </div>
+    <div class="page-actions">
+      <a class="primary-button" routerLink="new">New task</a>
+      <div class="page-info">
+        <span>{{ resultCount() }} resultado{{ resultCount() !== 1 ? 's' : '' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="filters">
+    <div class="filter-group">
+      <label for="search">Buscar</label>
+      <input
+        id="search"
+        type="text"
+        [value]="searchTerm()"
+        (input)="searchTerm.set($any($event.target).value)"
+        placeholder="Título ou descrição"
+      />
+    </div>
+
+    <div class="filter-group">
+      <label for="status">Status</label>
+      <select
+        id="status"
+        [value]="selectedStatus()"
+        (change)="selectedStatus.set($any($event.target).value || null)"
+      >
+        <option
+          *ngFor="let option of statusOptions()"
+          [value]="option.value"
+        >
+          {{ option.label }}
+        </option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="priority">Prioridade</label>
+      <select
+        id="priority"
+        [value]="selectedPriority()"
+        (change)="selectedPriority.set($any($event.target).value || null)"
+      >
+        <option
+          *ngFor="let option of priorityOptions()"
+          [value]="option.value"
+        >
+          {{ option.label }}
+        </option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="sort">Ordenar por</label>
+      <select
+        id="sort"
+        [value]="sortOption()"
+        (change)="sortOption.set($any($event.target).value)"
+      >
+        <option
+          *ngFor="let option of sortOptions()"
+          [value]="option.value"
+        >
+          {{ option.label }}
+        </option>
+      </select>
+    </div>
+
+    <button class="clear-button" type="button" (click)="clearFilters()">
+      Limpar filtros
+    </button>
+  </div>
+
+  <div *ngIf="loading()" class="status-message">
+    Carregando tarefas...
+  </div>
+
+  <div *ngIf="error()" class="status-message error">
+    {{ error() }}
+  </div>
+
+  <div *ngIf="!loading() && !error() && resultCount() === 0" class="empty-state">
+    Nenhuma tarefa encontrada para os filtros aplicados.
+  </div>
+
+  <div *ngIf="!loading() && !error() && resultCount() > 0" class="task-list">
+    <div *ngFor="let task of filteredTasks()" class="task-list__item">
+      <app-task-card [task]="task"></app-task-card>
+      <a class="edit-button" [routerLink]="['/tasks', task.id, 'edit']">Edit</a>
+    </div>
+  </div>
 </section>

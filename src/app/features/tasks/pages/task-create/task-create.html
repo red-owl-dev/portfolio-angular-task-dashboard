@@ -1,0 +1,11 @@
+<section class="page-shell">
+  <div class="page-header">
+    <div>
+      <p class="eyebrow">Nova tarefa</p>
+      <h1>Adicionar tarefa</h1>
+      <p>Use o formulário abaixo para cadastrar uma nova tarefa.</p>
+    </div>
+  </div>
+
+  <app-task-form (save)="onSave($event)" (cancel)="onCancel()"></app-task-form>
+</section>

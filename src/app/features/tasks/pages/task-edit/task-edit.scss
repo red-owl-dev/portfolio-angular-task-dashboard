@@ -1,0 +1,28 @@
+.page-shell {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.page-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  color: #2563eb;
+  letter-spacing: 0.1em;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 2.5vw, 2.5rem);
+}
+
+p {
+  margin: 0;
+  color: #475569;
+}
