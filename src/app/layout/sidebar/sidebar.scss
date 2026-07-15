@@ -1,0 +1,41 @@
+:host {
+  display: block;
+  background: #f8fafc;
+  border-right: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.sidebar {
+  min-height: calc(100vh - 64px);
+  padding: 1.5rem 1rem;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.nav a {
+  display: inline-flex;
+  align-items: center;
+  color: #1f2937;
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.nav a:hover,
+.nav a.active {
+  background: rgba(59, 130, 246, 0.12);
+  color: #1d4ed8;
+}
+
+@media (max-width: 800px) {
+  .sidebar {
+    min-height: auto;
+    border-right: none;
+    border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+    padding: 1rem;
+  }
+}

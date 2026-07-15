@@ -1,0 +1,43 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background: #f8fafc;
+  color: #111827;
+}
+
+.shell {
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: 240px 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "header header"
+    "sidebar content";
+}
+
+app-header {
+  grid-area: header;
+}
+
+app-sidebar {
+  grid-area: sidebar;
+}
+
+.shell__content {
+  grid-area: content;
+  padding: 1.5rem;
+}
+
+@media (max-width: 800px) {
+  .shell {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "header"
+      "sidebar"
+      "content";
+  }
+
+  .shell__content {
+    padding: 1rem;
+  }
+}
