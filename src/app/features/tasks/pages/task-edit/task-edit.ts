@@ -1,9 +1,9 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, filter, of, switchMap, tap } from 'rxjs';
+import { catchError, filter, map, of, switchMap, tap } from 'rxjs';
 import { TaskForm, TaskFormValue } from '../../components/task-form/task-form';
-import { TaskService } from '../../../../core/services/task.service';
+import { TaskStore } from '../../state/task.store';
 import { Task } from '../../../../core/models/task.model';
 
 @Component({
@@ -16,7 +16,7 @@ import { Task } from '../../../../core/models/task.model';
 export class TaskEdit {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
-  private readonly taskService = inject(TaskService);
+  private readonly taskStore = inject(TaskStore);
 
   public readonly loading = signal(true);
   public readonly error = signal<string | null>(null);
@@ -38,9 +38,8 @@ export class TaskEdit {
       ...formValue,
     };
 
-    this.taskService.updateTask(updatedTask).pipe(
-      tap(() => this.router.navigate(['/tasks']))
-    ).subscribe();
+    this.taskStore.updateTask(updatedTask);
+    this.router.navigate(['/tasks']);
   }
 
   protected onCancel(): void {
@@ -51,7 +50,10 @@ export class TaskEdit {
     this.route.paramMap
       .pipe(
         filter((params) => params.has('id')),
-        switchMap((params) => this.taskService.getTaskById(params.get('id') ?? '')),
+        switchMap((params) => {
+          const id = params.get('id') ?? '';
+          return this.taskStore.loadTasks().pipe(map(() => this.taskStore.getTaskById(id)));
+        }),
         tap((task) => {
           if (!task) {
             this.error.set('Tarefa não encontrada.');

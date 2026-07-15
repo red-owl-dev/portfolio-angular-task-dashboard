@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Task, TaskPriority, TaskStatus } from '../../../../core/models/task.model';
@@ -21,8 +21,8 @@ export interface TaskFormValue {
 })
 export class TaskForm implements OnChanges {
   @Input() task?: Task;
-  @Output() save = new EventEmitter<TaskFormValue>();
-  @Output() cancel = new EventEmitter<void>();
+  @Output() taskSaved = new EventEmitter<TaskFormValue>();
+  @Output() canceled = new EventEmitter<void>();
 
   public readonly statusOptions: { value: TaskStatus; label: string }[] = [
     { value: 'pending', label: 'Pendente' },
@@ -37,8 +37,9 @@ export class TaskForm implements OnChanges {
   ];
 
   public form: FormGroup;
+  private readonly fb = inject(FormBuilder);
 
-  constructor(private readonly fb: FormBuilder) {
+  constructor() {
     this.form = this.fb.nonNullable.group({
       title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(80)]],
       description: ['', [Validators.maxLength(300)]],
@@ -61,11 +62,11 @@ export class TaskForm implements OnChanges {
       return;
     }
 
-    this.save.emit(this.form.getRawValue());
+    this.taskSaved.emit(this.form.getRawValue());
   }
 
   protected onCancel(): void {
-    this.cancel.emit();
+    this.canceled.emit();
   }
 
   private updateForm(): void {

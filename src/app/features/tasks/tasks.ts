@@ -1,9 +1,8 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { catchError, finalize, of } from 'rxjs';
-import { TaskService } from '../../core/services/task.service';
-import { Task, TaskPriority, TaskStatus } from '../../core/models/task.model';
+import { TaskStore } from './state/task.store';
+import { TaskPriority, TaskStatus } from '../../core/models/task.model';
 import { TaskCard } from './components/task-card/task-card';
 
 const statusOptions: { value: TaskStatus | null; label: string }[] = [
@@ -43,13 +42,14 @@ const priorityOrder: Record<TaskPriority, number> = {
   styleUrls: ['./tasks.scss'],
 })
 export class Tasks {
+  private readonly taskStore = inject(TaskStore);
+
   public readonly searchTerm = signal('');
   public readonly selectedStatus = signal<TaskStatus | null>(null);
   public readonly selectedPriority = signal<TaskPriority | null>(null);
   public readonly sortOption = signal<SortOption>('nearest');
-  public readonly loading = signal(true);
-  public readonly error = signal<string | null>(null);
-  public readonly tasks = signal<Task[]>([]);
+  public readonly loading = this.taskStore.loading;
+  public readonly error = this.taskStore.error;
 
   public readonly filteredTasks = computed(() => {
     const term = this.searchTerm().trim().toLowerCase();
@@ -57,7 +57,7 @@ export class Tasks {
     const priority = this.selectedPriority();
     const option = this.sortOption();
 
-    const filtered = this.tasks().filter((task) => {
+    const filtered = this.taskStore.tasks().filter((task) => {
       const matchesSearch =
         !term ||
         task.title.toLowerCase().includes(term) ||
@@ -88,8 +88,6 @@ export class Tasks {
   public readonly priorityOptions = signal(priorityOptions);
   public readonly sortOptions = signal(sortOptions);
 
-  private readonly taskService = inject(TaskService);
-
   constructor() {
     this.loadTasks();
   }
@@ -102,16 +100,15 @@ export class Tasks {
   }
 
   private loadTasks(): void {
-    this.taskService
-      .getTasks()
-      .pipe(
-        finalize(() => this.loading.set(false)),
-        catchError(() => {
-          this.error.set('Não foi possível carregar tarefas.');
-          this.tasks.set([]);
-          return of([] as Task[]);
-        })
-      )
-      .subscribe((tasks) => this.tasks.set(tasks));
+    this.taskStore.loadTasks().subscribe();
+  }
+
+  public deleteTask(id: string): void {
+    const confirmed = window.confirm('Tem certeza que deseja excluir esta tarefa?');
+    if (!confirmed) {
+      return;
+    }
+
+    this.taskStore.deleteTask(id);
   }
 }

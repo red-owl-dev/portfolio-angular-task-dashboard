@@ -93,7 +93,10 @@
   <div *ngIf="!loading() && !error() && resultCount() > 0" class="task-list">
     <div *ngFor="let task of filteredTasks()" class="task-list__item">
       <app-task-card [task]="task"></app-task-card>
-      <a class="edit-button" [routerLink]="['/tasks', task.id, 'edit']">Edit</a>
+      <div class="task-actions">
+        <a class="edit-button" [routerLink]="['/tasks', task.id, 'edit']">Edit</a>
+        <button class="delete-button" type="button" (click)="deleteTask(task.id)">Delete</button>
+      </div>
     </div>
   </div>
 </section>

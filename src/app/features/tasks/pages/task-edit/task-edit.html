@@ -7,11 +7,12 @@
     </div>
   </div>
 
+  <!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
   <div *ngIf="loading()" class="status-message">Carregando tarefa...</div>
 
   <div *ngIf="error() && !loading()" class="status-message error">{{ error() }}</div>
 
   <ng-container *ngIf="task() && !loading()">
-    <app-task-form [task]="task()" (save)="onSave($event)" (cancel)="onCancel()"></app-task-form>
+    <app-task-form [task]="task()" (taskSaved)="onSave($event)" (canceled)="onCancel()"></app-task-form>
   </ng-container>
 </section>

@@ -1,4 +1,64 @@
-<section class="feature-page">
-  <h1>Dashboard</h1>
-  <p>Visão geral simples das suas tarefas e do estado atual do projeto.</p>
+<section class="dashboard">
+  <header class="dashboard__header">
+    <div class="dashboard__header-copy">
+      <p class="dashboard__eyebrow">Resumo compartilhado</p>
+      <h1>Dashboard</h1>
+      <p>
+        Uma visão simples do estado atual das tarefas, consumindo diretamente os computed signals do
+        TaskStore.
+      </p>
+    </div>
+
+    <a routerLink="/tasks" class="dashboard__link">Abrir tarefas</a>
+  </header>
+
+  @if (loading()) {
+    <section class="dashboard__state" aria-live="polite">Carregando tarefas...</section>
+  } @else if (error()) {
+    <section class="dashboard__state dashboard__state--error" role="alert">
+      {{ error() }}
+    </section>
+  } @else {
+    <section class="dashboard__summary-grid" aria-label="Resumo das tarefas">
+      <app-summary-card label="Total de tarefas" [value]="totalTasks()" />
+      <app-summary-card label="Pendentes" [value]="pendingTasks()" />
+      <app-summary-card label="Em andamento" [value]="inProgressTasks()" />
+      <app-summary-card label="Concluídas" [value]="completedTasks()" />
+      <app-summary-card label="Atrasadas" [value]="overdueTasks()" />
+    </section>
+
+    <section class="dashboard__panel">
+      <div class="dashboard__panel-header">
+        <div>
+          <p class="dashboard__section-kicker">Próximas entregas</p>
+          <h2>Tarefas próximas do prazo</h2>
+        </div>
+        <span class="dashboard__count">{{ upcomingTasks().length }} itens</span>
+      </div>
+
+      @if (hasTasks()) {
+        @if (upcomingTasks().length > 0) {
+          <ul class="upcoming-list">
+            @for (task of upcomingTasks(); track task.id) {
+              <li class="upcoming-list__item">
+                <article class="upcoming-task">
+                  <div class="upcoming-task__main">
+                    <h3>{{ task.title }}</h3>
+                    <div class="upcoming-task__meta">
+                      <span>{{ priorityLabels[task.priority] }}</span>
+                      <span>{{ task.dueDate | date: 'dd/MM/yyyy' }}</span>
+                    </div>
+                  </div>
+                </article>
+              </li>
+            }
+          </ul>
+        } @else {
+          <p class="dashboard__empty">Nenhuma tarefa pendente para exibir no momento.</p>
+        }
+      } @else {
+        <p class="dashboard__empty">Nenhuma tarefa cadastrada ainda. Comece pela lista de tarefas.</p>
+      }
+    </section>
+  }
 </section>

@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { TaskForm, TaskFormValue } from '../../components/task-form/task-form';
-import { TaskService } from '../../../../core/services/task.service';
+import { TaskStore } from '../../state/task.store';
 import { Task } from '../../../../core/models/task.model';
 
 @Component({
@@ -14,7 +14,7 @@ import { Task } from '../../../../core/models/task.model';
 })
 export class TaskCreate {
   private readonly router = inject(Router);
-  private readonly taskService = inject(TaskService);
+  private readonly taskStore = inject(TaskStore);
 
   protected onSave(formValue: TaskFormValue): void {
     const task: Task = {
@@ -23,9 +23,8 @@ export class TaskCreate {
       ...formValue,
     };
 
-    this.taskService.createTask(task).subscribe(() => {
-      this.router.navigate(['/tasks']);
-    });
+    this.taskStore.createTask(task);
+    this.router.navigate(['/tasks']);
   }
 
   protected onCancel(): void {

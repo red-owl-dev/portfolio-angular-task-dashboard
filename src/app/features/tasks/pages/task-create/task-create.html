@@ -7,5 +7,5 @@
     </div>
   </div>
 
-  <app-task-form (save)="onSave($event)" (cancel)="onCancel()"></app-task-form>
+  <app-task-form (taskSaved)="onSave($event)" (canceled)="onCancel()"></app-task-form>
 </section>
