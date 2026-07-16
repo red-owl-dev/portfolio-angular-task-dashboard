@@ -111,7 +111,7 @@ describe('Dashboard', () => {
     fixture.detectChanges();
   }
 
-  it('exibe os valores corretos dos cards', async () => {
+  it('should show summary card values', async () => {
     await createComponent();
 
     const cards = Array.from(fixture.nativeElement.querySelectorAll('.summary-card') as NodeListOf<HTMLElement>);
@@ -123,7 +123,7 @@ describe('Dashboard', () => {
     expect(cards[4].textContent).toContain('0');
   });
 
-  it('exibe estado de loading', async () => {
+  it('should show loading state', async () => {
     await createComponent([], { loading: true });
 
     const loading = fixture.nativeElement.querySelector('.dashboard__state');
@@ -131,7 +131,7 @@ describe('Dashboard', () => {
     expect(loading.textContent).toContain('Carregando tarefas');
   });
 
-  it('exibe mensagem de erro', async () => {
+  it('should show error state', async () => {
     await createComponent([], { error: 'Falha ao carregar' });
 
     const error = fixture.nativeElement.querySelector('.dashboard__state--error');
@@ -139,7 +139,7 @@ describe('Dashboard', () => {
     expect(error.textContent).toContain('Falha ao carregar');
   });
 
-  it('exibe estado sem tarefas', async () => {
+  it('should show empty state', async () => {
     await createComponent([]);
 
     const empty = fixture.nativeElement.querySelector('.dashboard__empty');
@@ -147,7 +147,7 @@ describe('Dashboard', () => {
     expect(empty.textContent).toContain('Nenhuma tarefa cadastrada');
   });
 
-  it('ordena tarefas pelo prazo', async () => {
+  it('should order upcoming tasks by due date', async () => {
     await createComponent();
 
     const titles = Array.from(fixture.nativeElement.querySelectorAll('.upcoming-task h3') as NodeListOf<HTMLElement>).map(
@@ -163,14 +163,14 @@ describe('Dashboard', () => {
     ]);
   });
 
-  it('limita a lista a 5 itens', async () => {
+  it('should limit upcoming tasks to five items', async () => {
     await createComponent();
 
     const items = fixture.nativeElement.querySelectorAll('.upcoming-list__item');
     expect(items.length).toBe(5);
   });
 
-  it('não inclui tarefas concluídas nas próximas tarefas', async () => {
+  it('should exclude completed tasks from upcoming tasks', async () => {
     await createComponent();
 
     const content = fixture.nativeElement.querySelector('.upcoming-list')?.textContent ?? '';

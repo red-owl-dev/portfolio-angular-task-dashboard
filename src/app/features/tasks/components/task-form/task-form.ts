@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Task, TaskPriority, TaskStatus } from '../../../../core/models/task.model';
 
@@ -21,6 +21,7 @@ export interface TaskFormValue {
 })
 export class TaskForm implements OnChanges {
   @Input() task?: Task;
+  @Input() saving = false;
   @Output() taskSaved = new EventEmitter<TaskFormValue>();
   @Output() canceled = new EventEmitter<void>();
 
@@ -57,6 +58,10 @@ export class TaskForm implements OnChanges {
   }
 
   protected submit(): void {
+    if (this.saving) {
+      return;
+    }
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;

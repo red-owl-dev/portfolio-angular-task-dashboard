@@ -1,10 +1,10 @@
-import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, filter, map, of, switchMap, tap } from 'rxjs';
+import { catchError, filter, of, switchMap, tap } from 'rxjs';
+import { Task } from '../../../../core/models/task.model';
 import { TaskForm, TaskFormValue } from '../../components/task-form/task-form';
 import { TaskStore } from '../../state/task.store';
-import { Task } from '../../../../core/models/task.model';
 
 @Component({
   selector: 'app-task-edit',
@@ -19,15 +19,19 @@ export class TaskEdit {
   private readonly taskStore = inject(TaskStore);
 
   public readonly loading = signal(true);
-  public readonly error = signal<string | null>(null);
+  public readonly saving = signal(false);
+  public readonly error = this.taskStore.error;
   public readonly task = signal<Task | undefined>(undefined);
-  public readonly missingTask = computed(() => !this.loading() && !!this.error());
 
   constructor() {
     this.loadTask();
   }
 
   protected onSave(formValue: TaskFormValue): void {
+    if (this.saving()) {
+      return;
+    }
+
     const existingTask = this.task();
     if (!existingTask) {
       return;
@@ -38,8 +42,17 @@ export class TaskEdit {
       ...formValue,
     };
 
-    this.taskStore.updateTask(updatedTask);
-    this.router.navigate(['/tasks']);
+    this.saving.set(true);
+    this.taskStore.clearError();
+
+    this.taskStore.updateTask(updatedTask).subscribe({
+      next: () => this.router.navigate(['/tasks']),
+      error: () => this.saving.set(false),
+    });
+  }
+
+  protected clearError(): void {
+    this.taskStore.clearError();
   }
 
   protected onCancel(): void {
@@ -52,17 +65,14 @@ export class TaskEdit {
         filter((params) => params.has('id')),
         switchMap((params) => {
           const id = params.get('id') ?? '';
-          return this.taskStore.loadTasks().pipe(map(() => this.taskStore.getTaskById(id)));
+          const storedTask = this.taskStore.getTaskById(id);
+          return storedTask ? of(storedTask) : this.taskStore.loadTaskById(id);
         }),
         tap((task) => {
-          if (!task) {
-            this.error.set('Tarefa não encontrada.');
-          }
           this.task.set(task);
           this.loading.set(false);
         }),
         catchError(() => {
-          this.error.set('Não foi possível carregar a tarefa.');
           this.loading.set(false);
           return of(undefined);
         })

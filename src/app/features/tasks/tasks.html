@@ -83,19 +83,27 @@
   </div>
 
   <div *ngIf="error()" class="status-message error">
-    {{ error() }}
+    <span>{{ error() }}</span>
+    <button type="button" class="status-message__close" (click)="clearError()">Close</button>
   </div>
 
   <div *ngIf="!loading() && !error() && resultCount() === 0" class="empty-state">
     Nenhuma tarefa encontrada para os filtros aplicados.
   </div>
 
-  <div *ngIf="!loading() && !error() && resultCount() > 0" class="task-list">
+  <div *ngIf="resultCount() > 0" class="task-list">
     <div *ngFor="let task of filteredTasks()" class="task-list__item">
       <app-task-card [task]="task"></app-task-card>
       <div class="task-actions">
         <a class="edit-button" [routerLink]="['/tasks', task.id, 'edit']">Edit</a>
-        <button class="delete-button" type="button" (click)="deleteTask(task.id)">Delete</button>
+        <button
+          class="delete-button"
+          type="button"
+          [disabled]="deletingTaskId() === task.id"
+          (click)="deleteTask(task.id)"
+        >
+          {{ deletingTaskId() === task.id ? 'Deleting...' : 'Delete' }}
+        </button>
       </div>
     </div>
   </div>

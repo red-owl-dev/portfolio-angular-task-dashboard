@@ -1,5 +1,7 @@
 # AngularTaskDashboard
 
+[![CI](https://github.com/red-owl-dev/portfolio-angular-task-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/red-owl-dev/portfolio-angular-task-dashboard/actions/workflows/ci.yml)
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.19.
 
 ## Development server
@@ -11,6 +13,17 @@ ng serve
 ```
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+
+## API
+
+The task dashboard reads and writes tasks through the REST API configured in `src/environments/environment.ts`.
+For local development, the API URL is `http://localhost:5000/api`.
+
+The API must allow CORS requests from:
+
+```text
+http://localhost:4200
+```
 
 ## Code scaffolding
 
@@ -43,6 +56,10 @@ To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use th
 ```bash
 ng test
 ```
+
+## Continuous Integration
+
+Pushes and pull requests run GitHub Actions to install dependencies, lint the code, execute tests once, and build the production bundle.
 
 ## Running end-to-end tests
 

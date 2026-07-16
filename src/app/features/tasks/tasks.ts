@@ -1,9 +1,9 @@
-import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, computed, inject, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { TaskStore } from './state/task.store';
 import { TaskPriority, TaskStatus } from '../../core/models/task.model';
 import { TaskCard } from './components/task-card/task-card';
+import { TaskStore } from './state/task.store';
 
 const statusOptions: { value: TaskStatus | null; label: string }[] = [
   { value: null, label: 'Todos os status' },
@@ -48,6 +48,7 @@ export class Tasks {
   public readonly selectedStatus = signal<TaskStatus | null>(null);
   public readonly selectedPriority = signal<TaskPriority | null>(null);
   public readonly sortOption = signal<SortOption>('nearest');
+  public readonly deletingTaskId = signal<string | null>(null);
   public readonly loading = this.taskStore.loading;
   public readonly error = this.taskStore.error;
 
@@ -99,16 +100,28 @@ export class Tasks {
     this.sortOption.set('nearest');
   }
 
-  private loadTasks(): void {
-    this.taskStore.loadTasks().subscribe();
+  public clearError(): void {
+    this.taskStore.clearError();
   }
 
   public deleteTask(id: string): void {
+    if (this.deletingTaskId()) {
+      return;
+    }
+
     const confirmed = window.confirm('Tem certeza que deseja excluir esta tarefa?');
     if (!confirmed) {
       return;
     }
 
-    this.taskStore.deleteTask(id);
+    this.deletingTaskId.set(id);
+    this.taskStore.deleteTask(id).subscribe({
+      next: () => this.deletingTaskId.set(null),
+      error: () => this.deletingTaskId.set(null),
+    });
+  }
+
+  private loadTasks(): void {
+    this.taskStore.loadTasks().subscribe();
   }
 }

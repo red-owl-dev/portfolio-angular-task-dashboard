@@ -54,7 +54,9 @@
   </div>
 
   <div class="actions">
-    <button type="button" class="secondary-button" (click)="onCancel()">Cancelar</button>
-    <button type="submit" class="primary-button" [disabled]="form.invalid">Salvar</button>
+    <button type="button" class="secondary-button" [disabled]="saving" (click)="onCancel()">Cancelar</button>
+    <button type="submit" class="primary-button" [disabled]="form.invalid || saving">
+      {{ saving ? 'Salvando...' : 'Salvar' }}
+    </button>
   </div>
 </form>

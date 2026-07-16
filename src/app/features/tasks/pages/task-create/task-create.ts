@@ -1,9 +1,9 @@
-import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
+import { Task } from '../../../../core/models/task.model';
 import { TaskForm, TaskFormValue } from '../../components/task-form/task-form';
 import { TaskStore } from '../../state/task.store';
-import { Task } from '../../../../core/models/task.model';
 
 @Component({
   selector: 'app-task-create',
@@ -16,15 +16,31 @@ export class TaskCreate {
   private readonly router = inject(Router);
   private readonly taskStore = inject(TaskStore);
 
+  public readonly saving = signal(false);
+  public readonly error = this.taskStore.error;
+
   protected onSave(formValue: TaskFormValue): void {
+    if (this.saving()) {
+      return;
+    }
+
     const task: Task = {
       id: crypto.randomUUID(),
       createdAt: new Date().toISOString(),
       ...formValue,
     };
 
-    this.taskStore.createTask(task);
-    this.router.navigate(['/tasks']);
+    this.saving.set(true);
+    this.taskStore.clearError();
+
+    this.taskStore.createTask(task).subscribe({
+      next: () => this.router.navigate(['/tasks']),
+      error: () => this.saving.set(false),
+    });
+  }
+
+  protected clearError(): void {
+    this.taskStore.clearError();
   }
 
   protected onCancel(): void {
