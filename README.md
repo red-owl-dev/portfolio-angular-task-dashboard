@@ -61,6 +61,12 @@ ng test
 
 Pushes and pull requests run GitHub Actions to install dependencies, lint the code, execute tests once, and build the production bundle.
 
+## GitHub Pages
+
+The portfolio build is published at `https://red-owl-dev.github.io/angular-task-dashboard/`.
+
+Deployments run automatically after pushes to `main`. In GitHub, configure Pages with `Settings -> Pages -> Build and deployment -> Source: GitHub Actions`.
+
 ## Running end-to-end tests
 
 For end-to-end (e2e) testing, run:
