@@ -8,14 +8,19 @@
   </div>
 
   <!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
-  <div *ngIf="loading()" class="status-message">Carregando tarefa...</div>
+  <div *ngIf="loading()" class="status-message" aria-live="polite">Carregando tarefa...</div>
 
-  <div *ngIf="error() && !loading()" class="status-message error">
+  <div *ngIf="error() && !loading()" class="status-message error" role="alert">
     <span>{{ error() }}</span>
-    <button type="button" class="status-message__close" (click)="clearError()">Close</button>
+    <button type="button" class="status-message__close" (click)="clearError()">Fechar</button>
   </div>
 
   <ng-container *ngIf="task() && !loading()">
-    <app-task-form [task]="task()" [saving]="saving()" (taskSaved)="onSave($event)" (canceled)="onCancel()"></app-task-form>
+    <app-task-form
+      [task]="task()"
+      [saving]="saving()"
+      (taskSaved)="onSave($event)"
+      (canceled)="onCancel()"
+    ></app-task-form>
   </ng-container>
 </section>

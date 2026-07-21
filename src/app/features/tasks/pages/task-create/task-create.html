@@ -8,11 +8,15 @@
   </div>
 
   @if (error()) {
-    <div class="status-message error">
+    <div class="status-message error" role="alert">
       <span>{{ error() }}</span>
-      <button type="button" class="status-message__close" (click)="clearError()">Close</button>
+      <button type="button" class="status-message__close" (click)="clearError()">Fechar</button>
     </div>
   }
 
-  <app-task-form [saving]="saving()" (taskSaved)="onSave($event)" (canceled)="onCancel()"></app-task-form>
+  <app-task-form
+    [saving]="saving()"
+    (taskSaved)="onSave($event)"
+    (canceled)="onCancel()"
+  ></app-task-form>
 </section>

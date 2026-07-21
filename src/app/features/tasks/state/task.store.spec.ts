@@ -95,7 +95,9 @@ describe('TaskStore', () => {
 
   it('should keep previous tasks when loading fails', async () => {
     await loadInitialTasks();
-    taskService.getTasks.mockReturnValueOnce(throwError(() => applicationError('Unable to connect to the server.')));
+    taskService.getTasks.mockReturnValueOnce(
+      throwError(() => applicationError('Unable to connect to the server.')),
+    );
 
     const tasks = await firstValueFrom(store.loadTasks());
 
@@ -130,6 +132,21 @@ describe('TaskStore', () => {
     expect(store.overdueTasks()).toBeGreaterThanOrEqual(0);
   });
 
+  it('should not mark a task due today as overdue', async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date(2026, 6, 21, 12));
+
+    try {
+      taskService.getTasks.mockReturnValue(of([{ ...mockTasks[0], dueDate: '2026-07-21' }]));
+
+      await firstValueFrom(store.loadTasks());
+
+      expect(store.overdueTasks()).toBe(0);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it('should create a task successfully', async () => {
     await loadInitialTasks();
     const createdTask: Task = {
@@ -144,7 +161,9 @@ describe('TaskStore', () => {
     };
     taskService.createTask.mockReturnValue(of(createdTask));
 
-    const result = await firstValueFrom(store.createTask({ ...createdTask, title: 'Titulo enviado' }));
+    const result = await firstValueFrom(
+      store.createTask({ ...createdTask, title: 'Titulo enviado' }),
+    );
 
     expect(result).toEqual(createdTask);
     expect(store.totalTasks()).toBe(4);
@@ -183,7 +202,9 @@ describe('TaskStore', () => {
     const error = applicationError();
     taskService.updateTask.mockReturnValue(throwError(() => error));
 
-    await expect(firstValueFrom(store.updateTask({ ...mockTasks[0], title: 'Alterada' }))).rejects.toBe(error);
+    await expect(
+      firstValueFrom(store.updateTask({ ...mockTasks[0], title: 'Alterada' })),
+    ).rejects.toBe(error);
 
     expect(store.getTaskById('task-001')).toEqual(mockTasks[0]);
     expect(store.error()).toBe('Unable to update task. Unable to complete the request.');

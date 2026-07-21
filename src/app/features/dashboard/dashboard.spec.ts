@@ -70,7 +70,10 @@ const baseTasks: Task[] = [
   },
 ];
 
-function createTaskStoreStub(tasks: Task[], options?: { loading?: boolean; error?: string | null }) {
+function createTaskStoreStub(
+  tasks: Task[],
+  options?: { loading?: boolean; error?: string | null },
+) {
   const tasksSignal = signal(tasks);
   const loadingSignal = signal(options?.loading ?? false);
   const errorSignal = signal(options?.error ?? null);
@@ -81,10 +84,16 @@ function createTaskStoreStub(tasks: Task[], options?: { loading?: boolean; error
     error: errorSignal.asReadonly(),
     totalTasks: signal(tasks.length).asReadonly(),
     pendingTasks: signal(tasks.filter((task) => task.status === 'pending').length).asReadonly(),
-    inProgressTasks: signal(tasks.filter((task) => task.status === 'in-progress').length).asReadonly(),
+    inProgressTasks: signal(
+      tasks.filter((task) => task.status === 'in-progress').length,
+    ).asReadonly(),
     completedTasks: signal(tasks.filter((task) => task.status === 'completed').length).asReadonly(),
     overdueTasks: signal(
-      tasks.filter((task) => task.status !== 'completed' && new Date(task.dueDate).getTime() < Date.parse('2026-07-15')).length
+      tasks.filter(
+        (task) =>
+          task.status !== 'completed' &&
+          new Date(task.dueDate).getTime() < Date.parse('2026-07-15'),
+      ).length,
     ).asReadonly(),
     loadTasks: vi.fn(() => of(tasks)),
   };
@@ -93,7 +102,10 @@ function createTaskStoreStub(tasks: Task[], options?: { loading?: boolean; error
 describe('Dashboard', () => {
   let fixture: ComponentFixture<Dashboard>;
 
-  async function createComponent(tasks: Task[] = baseTasks, options?: { loading?: boolean; error?: string | null }) {
+  async function createComponent(
+    tasks: Task[] = baseTasks,
+    options?: { loading?: boolean; error?: string | null },
+  ) {
     TestBed.resetTestingModule();
 
     await TestBed.configureTestingModule({
@@ -114,7 +126,9 @@ describe('Dashboard', () => {
   it('should show summary card values', async () => {
     await createComponent();
 
-    const cards = Array.from(fixture.nativeElement.querySelectorAll('.summary-card') as NodeListOf<HTMLElement>);
+    const cards = Array.from(
+      fixture.nativeElement.querySelectorAll('.summary-card') as NodeListOf<HTMLElement>,
+    );
     expect(cards.length).toBe(5);
     expect(cards[0].textContent).toContain('6');
     expect(cards[1].textContent).toContain('3');
@@ -150,9 +164,9 @@ describe('Dashboard', () => {
   it('should order upcoming tasks by due date', async () => {
     await createComponent();
 
-    const titles = Array.from(fixture.nativeElement.querySelectorAll('.upcoming-task h3') as NodeListOf<HTMLElement>).map(
-      (el) => el.textContent?.trim()
-    );
+    const titles = Array.from(
+      fixture.nativeElement.querySelectorAll('.upcoming-task h3') as NodeListOf<HTMLElement>,
+    ).map((el) => el.textContent?.trim());
 
     expect(titles).toEqual([
       'Ajustar métricas',

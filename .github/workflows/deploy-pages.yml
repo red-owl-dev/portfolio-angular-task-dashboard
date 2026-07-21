@@ -39,7 +39,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build -- --base-href /angular-task-dashboard/
+        run: npm run build -- --base-href /portfolio-angular-task-dashboard/
 
       - name: Add SPA fallback
         run: cp dist/angular-task-dashboard/browser/index.html dist/angular-task-dashboard/browser/404.html

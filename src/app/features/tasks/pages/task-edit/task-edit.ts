@@ -75,7 +75,7 @@ export class TaskEdit {
         catchError(() => {
           this.loading.set(false);
           return of(undefined);
-        })
+        }),
       )
       .subscribe();
   }

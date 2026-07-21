@@ -11,8 +11,8 @@
   grid-template-columns: 240px 1fr;
   grid-template-rows: auto 1fr;
   grid-template-areas:
-    "header header"
-    "sidebar content";
+    'header header'
+    'sidebar content';
 }
 
 app-header {
@@ -32,9 +32,9 @@ app-sidebar {
   .shell {
     grid-template-columns: 1fr;
     grid-template-areas:
-      "header"
-      "sidebar"
-      "content";
+      'header'
+      'sidebar'
+      'content';
   }
 
   .shell__content {

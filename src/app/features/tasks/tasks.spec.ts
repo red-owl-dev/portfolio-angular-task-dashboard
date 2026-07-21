@@ -44,7 +44,11 @@ const mockTasks: Task[] = [
 @Component({ standalone: true, template: '' })
 class EmptyRoute {}
 
-function createTaskStoreStub(options?: { tasks?: Task[]; loading?: boolean; error?: string | null }) {
+function createTaskStoreStub(options?: {
+  tasks?: Task[];
+  loading?: boolean;
+  error?: string | null;
+}) {
   const tasksSignal = signal(options?.tasks ?? mockTasks);
   const loadingSignal = signal(options?.loading ?? false);
   const errorSignal = signal(options?.error ?? null);
@@ -67,7 +71,11 @@ describe('Tasks', () => {
   let component: Tasks;
   let taskStore: ReturnType<typeof createTaskStoreStub>;
 
-  async function createComponent(options?: { tasks?: Task[]; loading?: boolean; error?: string | null }) {
+  async function createComponent(options?: {
+    tasks?: Task[];
+    loading?: boolean;
+    error?: string | null;
+  }) {
     TestBed.resetTestingModule();
     taskStore = createTaskStoreStub(options);
 
@@ -104,7 +112,9 @@ describe('Tasks', () => {
   it('should show error state', async () => {
     await createComponent({ error: 'Unable to load tasks.' });
 
-    expect(fixture.nativeElement.querySelector('.status-message.error').textContent).toContain('Unable to load tasks.');
+    expect(fixture.nativeElement.querySelector('.status-message.error').textContent).toContain(
+      'Unable to load tasks.',
+    );
   });
 
   it('should clear error message', async () => {
@@ -120,7 +130,9 @@ describe('Tasks', () => {
   it('should show empty state', async () => {
     await createComponent({ tasks: [] });
 
-    expect(fixture.nativeElement.querySelector('.empty-state').textContent).toContain('Nenhuma tarefa encontrada');
+    expect(fixture.nativeElement.querySelector('.empty-state').textContent).toContain(
+      'Nenhuma tarefa encontrada',
+    );
   });
 
   it('should render task list', async () => {
@@ -157,10 +169,16 @@ describe('Tasks', () => {
     component.sortOption.set('title');
     fixture.detectChanges();
 
-    const titles = Array.from(fixture.nativeElement.querySelectorAll('.task-card .task-card__title') as NodeListOf<HTMLElement>).map(
-      (item) => item.textContent?.trim()
-    );
-    expect(titles).toEqual(['Atualizar documentacao', 'Corrigir bugs de autenticacao', 'Planejar sprint de marketing']);
+    const titles = Array.from(
+      fixture.nativeElement.querySelectorAll(
+        '.task-card .task-card__title',
+      ) as NodeListOf<HTMLElement>,
+    ).map((item) => item.textContent?.trim());
+    expect(titles).toEqual([
+      'Atualizar documentacao',
+      'Corrigir bugs de autenticacao',
+      'Planejar sprint de marketing',
+    ]);
   });
 
   it('should clear filters', async () => {

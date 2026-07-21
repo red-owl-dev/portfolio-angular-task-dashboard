@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Task } from '../../../../core/models/task.model';
@@ -8,7 +7,7 @@ import { TaskStore } from '../../state/task.store';
 @Component({
   selector: 'app-task-create',
   standalone: true,
-  imports: [CommonModule, TaskForm],
+  imports: [TaskForm],
   templateUrl: './task-create.html',
   styleUrls: ['./task-create.scss'],
 })

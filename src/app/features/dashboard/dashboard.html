@@ -46,7 +46,7 @@
                     <h3>{{ task.title }}</h3>
                     <div class="upcoming-task__meta">
                       <span>{{ priorityLabels[task.priority] }}</span>
-                      <span>{{ task.dueDate | date: 'dd/MM/yyyy' }}</span>
+                      <span>{{ task.dueDate | date: 'dd/MM/yyyy' : 'UTC' }}</span>
                     </div>
                   </div>
                 </article>
@@ -57,7 +57,9 @@
           <p class="dashboard__empty">Nenhuma tarefa pendente para exibir no momento.</p>
         }
       } @else {
-        <p class="dashboard__empty">Nenhuma tarefa cadastrada ainda. Comece pela lista de tarefas.</p>
+        <p class="dashboard__empty">
+          Nenhuma tarefa cadastrada ainda. Comece pela lista de tarefas.
+        </p>
       }
     </section>
   }

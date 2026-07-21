@@ -18,11 +18,13 @@ export const routes: Routes = [
           },
           {
             path: 'new',
-            loadComponent: () => import('./features/tasks/pages/task-create/task-create').then((m) => m.TaskCreate),
+            loadComponent: () =>
+              import('./features/tasks/pages/task-create/task-create').then((m) => m.TaskCreate),
           },
           {
             path: ':id/edit',
-            loadComponent: () => import('./features/tasks/pages/task-edit/task-edit').then((m) => m.TaskEdit),
+            loadComponent: () =>
+              import('./features/tasks/pages/task-edit/task-edit').then((m) => m.TaskEdit),
           },
         ],
       },
@@ -38,4 +40,3 @@ export const routes: Routes = [
     ],
   },
 ];
-

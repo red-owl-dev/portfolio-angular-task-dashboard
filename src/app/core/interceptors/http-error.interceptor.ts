@@ -3,7 +3,9 @@ import { catchError, throwError } from 'rxjs';
 import { ApplicationError } from '../models/application-error.model';
 
 export const httpErrorInterceptor: HttpInterceptorFn = (request, next) => {
-  return next(request).pipe(catchError((error: unknown) => throwError(() => toApplicationError(error))));
+  return next(request).pipe(
+    catchError((error: unknown) => throwError(() => toApplicationError(error))),
+  );
 };
 
 export function toApplicationError(error: unknown): ApplicationError {

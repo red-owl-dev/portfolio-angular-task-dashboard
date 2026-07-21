@@ -1,4 +1,4 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Task } from '../../core/models/task.model';
@@ -14,7 +14,7 @@ const priorityLabels: Record<Task['priority'], string> = {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterModule, DatePipe, SummaryCard],
+  imports: [RouterModule, DatePipe, SummaryCard],
   templateUrl: './dashboard.html',
   styleUrls: ['./dashboard.scss'],
 })

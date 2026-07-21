@@ -20,18 +20,25 @@ export class TaskStore {
   public readonly error = this._error.asReadonly();
 
   public readonly totalTasks = computed(() => this.tasks().length);
-  public readonly pendingTasks = computed(() => this.tasks().filter((task) => task.status === 'pending').length);
-  public readonly inProgressTasks = computed(() => this.tasks().filter((task) => task.status === 'in-progress').length);
-  public readonly completedTasks = computed(() => this.tasks().filter((task) => task.status === 'completed').length);
+  public readonly pendingTasks = computed(
+    () => this.tasks().filter((task) => task.status === 'pending').length,
+  );
+  public readonly inProgressTasks = computed(
+    () => this.tasks().filter((task) => task.status === 'in-progress').length,
+  );
+  public readonly completedTasks = computed(
+    () => this.tasks().filter((task) => task.status === 'completed').length,
+  );
   public readonly overdueTasks = computed(() => {
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const currentDate = [
+      today.getFullYear(),
+      String(today.getMonth() + 1).padStart(2, '0'),
+      String(today.getDate()).padStart(2, '0'),
+    ].join('-');
 
-    return this.tasks().filter((task) => {
-      const dueDate = new Date(task.dueDate);
-      dueDate.setHours(0, 0, 0, 0);
-      return task.status !== 'completed' && dueDate < today;
-    }).length;
+    return this.tasks().filter((task) => task.status !== 'completed' && task.dueDate < currentDate)
+      .length;
   });
 
   public loadTasks(): Observable<Task[]> {
@@ -52,7 +59,7 @@ export class TaskStore {
         this.loadTasksRequest = null;
         this._loading.set(false);
       }),
-      shareReplay({ bufferSize: 1, refCount: true })
+      shareReplay({ bufferSize: 1, refCount: true }),
     );
 
     return this.loadTasksRequest;
@@ -68,7 +75,7 @@ export class TaskStore {
         this.setError('Unable to load task.', error);
         return throwError(() => error);
       }),
-      finalize(() => this._loading.set(false))
+      finalize(() => this._loading.set(false)),
     );
   }
 
@@ -86,7 +93,7 @@ export class TaskStore {
         this.setError('Unable to create task.', error);
         return throwError(() => error);
       }),
-      finalize(() => this._loading.set(false))
+      finalize(() => this._loading.set(false)),
     );
   }
 
@@ -100,7 +107,7 @@ export class TaskStore {
         this.setError('Unable to update task.', error);
         return throwError(() => error);
       }),
-      finalize(() => this._loading.set(false))
+      finalize(() => this._loading.set(false)),
     );
   }
 
@@ -114,7 +121,7 @@ export class TaskStore {
         this.setError('Unable to delete task.', error);
         return throwError(() => error);
       }),
-      finalize(() => this._loading.set(false))
+      finalize(() => this._loading.set(false)),
     );
   }
 
@@ -141,7 +148,9 @@ export class TaskStore {
   private upsertTask(task: Task): void {
     this._tasks.update((tasks) => {
       const taskExists = tasks.some((item) => item.id === task.id);
-      return taskExists ? tasks.map((item) => (item.id === task.id ? task : item)) : [...tasks, task];
+      return taskExists
+        ? tasks.map((item) => (item.id === task.id ? task : item))
+        : [...tasks, task];
     });
   }
 }

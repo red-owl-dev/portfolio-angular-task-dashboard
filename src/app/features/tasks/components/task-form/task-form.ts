@@ -1,6 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  inject,
+} from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Task, TaskPriority, TaskStatus } from '../../../../core/models/task.model';
 
 export interface TaskFormValue {
@@ -37,19 +45,15 @@ export class TaskForm implements OnChanges {
     { value: 'high', label: 'Alta' },
   ];
 
-  public form: FormGroup;
   private readonly fb = inject(FormBuilder);
-
-  constructor() {
-    this.form = this.fb.nonNullable.group({
-      title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(80)]],
-      description: ['', [Validators.maxLength(300)]],
-      status: ['pending' as TaskStatus, [Validators.required]],
-      priority: ['medium' as TaskPriority, [Validators.required]],
-      assignee: [''],
-      dueDate: ['', [Validators.required]],
-    });
-  }
+  public readonly form = this.fb.nonNullable.group({
+    title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(80)]],
+    description: ['', [Validators.maxLength(300)]],
+    status: ['pending' as TaskStatus, [Validators.required]],
+    priority: ['medium' as TaskPriority, [Validators.required]],
+    assignee: [''],
+    dueDate: ['', [Validators.required]],
+  });
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['task']) {

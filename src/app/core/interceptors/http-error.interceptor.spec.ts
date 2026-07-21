@@ -14,7 +14,7 @@ describe('httpErrorInterceptor', () => {
       new HttpErrorResponse({
         status: 400,
         error: { message: 'Title is required.' },
-      })
+      }),
     );
 
     expect(error.message).toBe('Title is required.');

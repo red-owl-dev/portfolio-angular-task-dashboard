@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Task } from '../../../../core/models/task.model';
 
 const statusLabels = {
@@ -17,12 +17,12 @@ const priorityLabels = {
 @Component({
   selector: 'app-task-card',
   standalone: true,
-  imports: [CommonModule, DatePipe],
+  imports: [DatePipe],
   templateUrl: './task-card.html',
   styleUrls: ['./task-card.scss'],
 })
 export class TaskCard {
-  @Input() task!: Task;
+  @Input({ required: true }) task!: Task;
 
   readonly statusLabels = statusLabels;
   readonly priorityLabels = priorityLabels;

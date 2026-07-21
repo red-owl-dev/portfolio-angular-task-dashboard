@@ -3,7 +3,10 @@
   <div class="field-row">
     <label for="title">Título</label>
     <input id="title" type="text" formControlName="title" />
-    <div class="field-error" *ngIf="form.controls['title'].touched && form.controls['title'].invalid">
+    <div
+      class="field-error"
+      *ngIf="form.controls['title'].touched && form.controls['title'].invalid"
+    >
       <span *ngIf="form.controls['title'].errors?.['required']">Título é obrigatório.</span>
       <span *ngIf="form.controls['title'].errors?.['minlength']">Mínimo de 3 caracteres.</span>
       <span *ngIf="form.controls['title'].errors?.['maxlength']">Máximo de 80 caracteres.</span>
@@ -13,8 +16,13 @@
   <div class="field-row">
     <label for="description">Descrição</label>
     <textarea id="description" formControlName="description" rows="4"></textarea>
-    <div class="field-error" *ngIf="form.controls['description'].touched && form.controls['description'].invalid">
-      <span *ngIf="form.controls['description'].errors?.['maxlength']">Máximo de 300 caracteres.</span>
+    <div
+      class="field-error"
+      *ngIf="form.controls['description'].touched && form.controls['description'].invalid"
+    >
+      <span *ngIf="form.controls['description'].errors?.['maxlength']"
+        >Máximo de 300 caracteres.</span
+      >
     </div>
   </div>
 
@@ -22,9 +30,14 @@
     <div>
       <label for="status">Status</label>
       <select id="status" formControlName="status">
-        <option *ngFor="let option of statusOptions" [value]="option.value">{{ option.label }}</option>
+        <option *ngFor="let option of statusOptions" [value]="option.value">
+          {{ option.label }}
+        </option>
       </select>
-      <div class="field-error" *ngIf="form.controls['status'].touched && form.controls['status'].invalid">
+      <div
+        class="field-error"
+        *ngIf="form.controls['status'].touched && form.controls['status'].invalid"
+      >
         <span>Status é obrigatório.</span>
       </div>
     </div>
@@ -32,9 +45,14 @@
     <div>
       <label for="priority">Prioridade</label>
       <select id="priority" formControlName="priority">
-        <option *ngFor="let option of priorityOptions" [value]="option.value">{{ option.label }}</option>
+        <option *ngFor="let option of priorityOptions" [value]="option.value">
+          {{ option.label }}
+        </option>
       </select>
-      <div class="field-error" *ngIf="form.controls['priority'].touched && form.controls['priority'].invalid">
+      <div
+        class="field-error"
+        *ngIf="form.controls['priority'].touched && form.controls['priority'].invalid"
+      >
         <span>Prioridade é obrigatória.</span>
       </div>
     </div>
@@ -48,13 +66,18 @@
   <div class="field-row">
     <label for="dueDate">Prazo</label>
     <input id="dueDate" type="date" formControlName="dueDate" />
-    <div class="field-error" *ngIf="form.controls['dueDate'].touched && form.controls['dueDate'].invalid">
+    <div
+      class="field-error"
+      *ngIf="form.controls['dueDate'].touched && form.controls['dueDate'].invalid"
+    >
       <span>Prazo é obrigatório.</span>
     </div>
   </div>
 
   <div class="actions">
-    <button type="button" class="secondary-button" [disabled]="saving" (click)="onCancel()">Cancelar</button>
+    <button type="button" class="secondary-button" [disabled]="saving" (click)="onCancel()">
+      Cancelar
+    </button>
     <button type="submit" class="primary-button" [disabled]="form.invalid || saving">
       {{ saving ? 'Salvando...' : 'Salvar' }}
     </button>
