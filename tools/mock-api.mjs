@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { createServer } from 'node:http';
 
-const host = 'localhost';
+const host = process.env.MOCK_API_HOST ?? 'localhost';
 const port = Number(process.env.MOCK_API_PORT ?? 5000);
 const allowedOrigins = new Set([
   'http://localhost:4200',

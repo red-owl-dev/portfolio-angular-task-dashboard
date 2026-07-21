@@ -176,17 +176,27 @@ npm run api:mock
 
 ## Running with Docker
 
-Build and run the production image:
+Build and start the frontend and mock API together:
 
 ```bash
-npm run api:mock
-docker build -t angular-task-dashboard .
-docker run --name angular-dashboard --rm -p 8080:80 angular-task-dashboard
+docker compose up --build
 ```
 
-Open `http://localhost:8080`.
+Open `http://localhost:8080`. Docker Compose groups both services under the `angular-task-dashboard` project in Docker Desktop.
 
-The mock API remains a separate host process and is not included in the runtime image. The multi-stage image builds the Angular application with Node.js 24 and serves only the generated static files from Nginx. Nginx also provides the fallback required for Angular routes.
+Stop and remove the containers with:
+
+```bash
+docker compose down
+```
+
+If the standalone containers from the previous setup are running, stop them before starting Compose to release ports `5000` and `8080`:
+
+```bash
+docker stop angular-task-api angular-dashboard
+```
+
+The API and frontend run in separate containers. The API keeps its data in memory and resets when its container restarts. The multi-stage frontend image builds the Angular application with Node.js 24 and serves only the generated static files from Nginx. Nginx also provides the fallback required for Angular routes.
 
 ## Continuous Integration
 

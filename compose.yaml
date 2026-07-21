@@ -1,0 +1,20 @@
+name: angular-task-dashboard
+
+services:
+  mock-api:
+    image: angular-task-mock-api
+    build:
+      context: ./tools
+      dockerfile: Dockerfile.mock-api
+    ports:
+      - '5000:5000'
+
+  frontend:
+    image: angular-task-dashboard
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mock-api
+    ports:
+      - '8080:80'
